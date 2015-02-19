@@ -75,6 +75,8 @@
   <ItemGroup>
     <Compile Include="History.cs" />
     <Compile Include="InputKeyHandler.cs" />
+    <Compile Include="KeyboardExaminer.cs" />
+    <Compile Include="MenuCommandListWirer.cs" />
     <Compile Include="Operations\ActiveFileProvider.cs" />
     <Compile Include="Operations\ChangeReplNamespace.cs" />
     <Compile Include="Operations\LoadFilesIntoRepl.cs" />
@@ -91,6 +93,7 @@
     </Compile>
     <Compile Include="ReplToolWindow.cs" />
     <Compile Include="ReplWriter.cs" />
+    <Compile Include="StreamBuffer.cs" />
     <Compile Include="TextBoxWriter.cs" />
   </ItemGroup>
   <ItemGroup>

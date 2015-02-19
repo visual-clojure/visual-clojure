@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace VisualClojure.Utilities
+namespace VisualClojure.Repl
 {
 	public class StreamBuffer
 	{

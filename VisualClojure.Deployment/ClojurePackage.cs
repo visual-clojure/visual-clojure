@@ -80,7 +80,6 @@ namespace VisualClojure.Deployment
 
             try
             {
-
                 RegisterProjectFactory(new ClojureProjectFactory(this));
                 RegisterCommandMenuService();
                 HideAllClojureEditorMenuCommands();
@@ -102,7 +101,7 @@ namespace VisualClojure.Deployment
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(string.Format("Unhandled Exception loading vsClojure : {0}{1}Stack Trace: {2}", e.Message, System.Environment.NewLine, e.StackTrace));
+                        MessageBox.Show(string.Format("Unhandled Exception loading Visual Clojure : {0}{1}Stack Trace: {2}", e.Message, System.Environment.NewLine, e.StackTrace));
                     }
                 });
                 delayedStartup.IsBackground = true;
@@ -110,7 +109,7 @@ namespace VisualClojure.Deployment
             }
             catch (Exception e)
             {
-                MessageBox.Show(string.Format("Unhandled Exception loading vsClojure : {0}{1}Stack Trace: {2}", e.Message, System.Environment.NewLine, e.StackTrace));
+                MessageBox.Show(string.Format("Unhandled Exception loading Visual Clojure : {0}{1}Stack Trace: {2}", e.Message, System.Environment.NewLine, e.StackTrace));
             }
         }
 
@@ -124,7 +123,7 @@ namespace VisualClojure.Deployment
             catch (Exception e)
             {
                 var errorMessage = new StringBuilder();
-                errorMessage.AppendLine("Failed to extract Clojure runtime(s).  You may need to reinstall vsClojure.");
+                errorMessage.AppendLine("Failed to extract Clojure runtime(s).  You may need to reinstall Visual Clojure.");
                 errorMessage.AppendLine(e.Message);
                 MessageBox.Show(errorMessage.ToString());
             }
@@ -167,12 +166,20 @@ namespace VisualClojure.Deployment
 
         private void HideAllClojureEditorMenuCommands()
         {
-            List<CommandID> allCommandIds = new List<CommandID>() { CommandIDs.LoadProjectIntoActiveRepl, CommandIDs.LoadFileIntoActiveRepl, CommandIDs.LoadActiveDocumentIntoRepl, CommandIDs.SwitchReplNamespaceToActiveDocument, CommandIDs.LoadSelectedTextIntoRepl };
-            DTE2 dte = (DTE2)GetService(typeof(DTE));
-            OleMenuCommandService menuCommandService = (OleMenuCommandService)GetService(typeof(IMenuCommandService));
-            List<MenuCommand> menuCommands = new List<MenuCommand>();
-            foreach (CommandID commandId in allCommandIds) menuCommands.Add(new MenuCommand((o, s) => { }, commandId));
-            MenuCommandListHider hider = new MenuCommandListHider(menuCommandService, menuCommands);
+            var allCommandIds = new List<CommandID>()
+            {
+                CommandIDs.LoadProjectIntoActiveRepl,
+                CommandIDs.LoadFileIntoActiveRepl,
+                CommandIDs.LoadActiveDocumentIntoRepl,
+                CommandIDs.SwitchReplNamespaceToActiveDocument,
+                CommandIDs.LoadSelectedTextIntoRepl
+            };
+            var dte = GetService(typeof(DTE)) as DTE2;
+            var menuCommandService = GetService(typeof(IMenuCommandService)) as IMenuCommandService;
+
+            var menuCommands = allCommandIds.ConvertAll(commandId => new MenuCommand((o, s) => { }, commandId));
+
+            var hider = new MenuCommandListHider(menuCommandService, menuCommands);
             dte.Events.WindowEvents.WindowActivated += (o, e) => hider.HideMenuCommands();
         }
 
@@ -246,7 +253,7 @@ namespace VisualClojure.Deployment
 
                 string workingDirectory = GetTempDirectory();
 
-                Process newProcess = new Process();
+                var newProcess = new Process();
                 newProcess.StartInfo.UseShellExecute = false;
                 newProcess.StartInfo.RedirectStandardOutput = true;
                 newProcess.StartInfo.RedirectStandardError = true;
@@ -450,7 +457,6 @@ namespace VisualClojure.Deployment
                 if (_replToolWindow == null)
                 {
                     _replToolWindow = (ReplToolWindow)FindToolWindow(typeof(ReplToolWindow), 0, true);
-
                 }
 
                 return _replToolWindow;

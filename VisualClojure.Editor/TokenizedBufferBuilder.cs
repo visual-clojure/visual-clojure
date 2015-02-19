@@ -21,7 +21,7 @@ namespace VisualClojure.Editor
 
 		public void CreateTokenizedBuffer(ITextBuffer buffer)
 		{
-			Entity<LinkedList<Token>> tokenizedBuffer = new Entity<LinkedList<Token>>();
+			var tokenizedBuffer = new Entity<LinkedList<Token>>();
 			tokenizedBuffer.CurrentState = _tokenizer.Tokenize(buffer.CurrentSnapshot.GetText());
 			TokenizedBuffers.Add(buffer, tokenizedBuffer);
 		}

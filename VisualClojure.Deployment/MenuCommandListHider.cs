@@ -2,34 +2,30 @@
 // See LICENSE.txt or http://opensource.org/licenses/MIT
 // See AUTHORS.txt for a complete list of all contributors
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace VisualClojure.Utilities
+namespace VisualClojure.Deployment
 {
-	public class MenuCommandListWirer
+	public class MenuCommandListHider
 	{
 		private readonly IMenuCommandService _menuCommandService;
 		private readonly List<MenuCommand> _menuCommands;
-		private readonly Func<bool> _shouldDisplay;
 
-		public MenuCommandListWirer(IMenuCommandService menuCommandService, List<MenuCommand> menuCommands, Func<bool> shouldDisplay)
+		public MenuCommandListHider(IMenuCommandService menuCommandService, List<MenuCommand> menuCommands)
 		{
 			_menuCommandService = menuCommandService;
 			_menuCommands = menuCommands;
-			_shouldDisplay = shouldDisplay;
 		}
 
-		public void TryToShowMenuCommands()
+		public void HideMenuCommands()
 		{
-			if (!_shouldDisplay()) return;
-
 			foreach (var menuCommand in _menuCommands)
 			{
 				var existingMenuCommand = _menuCommandService.FindCommand(menuCommand.CommandID);
 				if (existingMenuCommand != null) _menuCommandService.RemoveCommand(existingMenuCommand);
 				_menuCommandService.AddCommand(menuCommand);
+				menuCommand.Visible = false;
 			}
 		}
 	}

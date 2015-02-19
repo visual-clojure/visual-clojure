@@ -19,7 +19,7 @@ namespace VisualClojure.Utilities.IO.FileSystem
 		{
 			using (var inflatedFileStream = File.Create(Path.Combine(_rootPath, relativePath)))
 			{
-				contentsStream.CopyContentsTo(inflatedFileStream);
+                contentsStream.CopyTo(inflatedFileStream, 2048);
 			}
 		}
 
